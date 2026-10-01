@@ -1,0 +1,49 @@
+services:
+    app:
+        build: .docker/php
+        container_name: symfony_app
+        ports:
+            - "8000:8000"
+        volumes:
+            - ./:/var/www
+        environment:
+            APACHE_DOCUMENT_ROOT: /var/www/public
+        depends_on:
+            - db
+            - maildev
+
+    db:
+        image: mysql:8.0
+        container_name: symfony_db
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: symfony
+            MYSQL_USER: symfony
+            MYSQL_PASSWORD: symfony
+        ports:
+            - "3306:3306"
+        volumes:
+            - db-data:/var/lib/mysql
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: symfony_phpmyadmin
+        environment:
+            PMA_HOST: db
+            PMA_USER: root
+            PMA_PASSWORD: root
+        ports:
+            - "8080:80"
+        depends_on:
+            - db
+
+    maildev:
+        image: maildev/maildev
+        container_name: symfony_maildev
+        ports:
+            - "1080:1080"
+            - "1025:1025"
+
+volumes:
+    db-data:
+        name: symfony_db

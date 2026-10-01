@@ -1,0 +1,58 @@
+security:
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+
+    providers:
+        app_utilisateurs:
+            entity:
+                class: App\Entity\Utilisateur
+                property: email
+
+    firewalls:
+        dev:
+            pattern: ^/(_profiler|_wdt|assets|build)/
+            security: false
+        main:
+            lazy: true
+            provider: app_utilisateurs
+            # Indispensable dès qu'il y a plusieurs authentificateurs (form_login + remember_me) :
+            # sans ça, Symfony ne sait pas lequel doit rediriger vers la page de connexion
+            # et renvoie une 401 brute ("Full authentication is required...") au lieu de rediriger.
+            entry_point: form_login
+
+            form_login:
+                login_path: app_connexion
+                check_path: app_connexion
+                username_parameter: email
+                password_parameter: mot_de_passe
+                default_target_path: app_accueil
+                enable_csrf: true
+
+            logout:
+                path: app_deconnexion
+                target: app_connexion
+
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 2592000 # 30 jours — « Se souvenir de moi »
+                remember_me_parameter: se_souvenir
+
+    access_control:
+        - { path: ^/connexion$, roles: PUBLIC_ACCESS }
+        - { path: ^/inscription$, roles: PUBLIC_ACCESS }
+        - { path: ^/mot-de-passe-oublie, roles: PUBLIC_ACCESS }
+        - { path: ^/reinitialisation, roles: PUBLIC_ACCESS }
+        - { path: ^/trajets/creer, roles: ROLE_USER }
+        - { path: ^/trajets/\d+/reserver, roles: ROLE_USER }
+        - { path: ^/mes-trajets, roles: ROLE_USER }
+        - { path: ^/mes-reservations, roles: ROLE_USER }
+        - { path: ^/profil, roles: ROLE_USER }
+
+when@test:
+    security:
+        password_hashers:
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4
+                time_cost: 3
+                memory_cost: 10
