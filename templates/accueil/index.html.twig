@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block corps %}
+    <section class="hero">
+        <div>
+            <span class="hero__badge">🌱 Covoiturage étudiant</span>
+            <h1>Bienvenue sur Eco Trajet{% if app.user %}, {{ app.user.prenom }}{% endif %} !</h1>
+            <p>
+                Partagez vos trajets avec d’autres étudiants, économisez sur vos
+                déplacements et réduisez votre impact environnemental.
+            </p>
+            <div class="hero__ctas">
+                <a href="{{ path('app_trajet_rechercher') }}" class="btn btn--primaire">Rechercher un trajet</a>
+                <a href="{{ path('app_trajet_creer') }}" class="btn btn--secondaire">Créer un trajet</a>
+            </div>
+        </div>
+        <svg class="hero__visuel" width="440" height="330" viewBox="0 0 440 330" fill="none" aria-hidden="true">
+            <rect width="440" height="330" rx="24" fill="#131614"/>
+            <path d="M70 270 C70 180, 220 240, 220 160 C220 80, 340 130, 350 60"
+                  stroke="#A3E635" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="1 14"/>
+            <circle cx="70" cy="270" r="10" fill="#A3E635"/>
+            <circle cx="70" cy="270" r="18" fill="#A3E635" fill-opacity="0.15"/>
+            <path d="M350 60 c-1-14 7-23 22-24 1 15-7 23-22 24Z" fill="#A3E635"/>
+            <circle cx="350" cy="62" r="6" fill="#0A0C0B" stroke="#A3E635" stroke-width="3"/>
+            <rect x="252" y="196" width="140" height="64" rx="14" fill="#191D1A" stroke="#252B26"/>
+            <text x="270" y="222" fill="#F2F5F1" font-family="Inter, sans-serif" font-size="13" font-weight="600">Rouen → Paris</text>
+            <text x="270" y="244" fill="#98A399" font-family="Inter, sans-serif" font-size="12">15 € · 3 places</text>
+            <rect x="48" y="52" width="132" height="52" rx="14" fill="#191D1A" stroke="#252B26"/>
+            <text x="64" y="74" fill="#F2F5F1" font-family="Inter, sans-serif" font-size="12" font-weight="600">−12 kg CO₂</text>
+            <text x="64" y="92" fill="#98A399" font-family="Inter, sans-serif" font-size="11">par trajet partagé</text>
+        </svg>
+    </section>
+
+    <section class="avantages">
+        <div class="avantage">
+            <div class="avantage__icone">💶</div>
+            <h3>Économisez</h3>
+            <p>Divisez les frais d’essence et de péage entre étudiants.</p>
+        </div>
+        <div class="avantage">
+            <div class="avantage__icone">🤝</div>
+            <h3>Partagez</h3>
+            <p>Rencontrez d’autres étudiants de votre campus sur la route.</p>
+        </div>
+        <div class="avantage">
+            <div class="avantage__icone">🌍</div>
+            <h3>Agissez pour l’environnement</h3>
+            <p>Moins de voitures, moins de CO₂ : chaque trajet partagé compte.</p>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes trajets{% endblock %}
+
+{% block corps %}
+    <h1>Mes trajets</h1>
+
+    <nav class="tabs" aria-label="Onglets">
+        <a href="{{ path('app_mes_trajets') }}" class="{{ onglet == 'crees' ? 'actif' }}">Mes trajets créés</a>
+        <a href="{{ path('app_mes_trajets', {onglet: 'reservations'}) }}" class="{{ onglet == 'reservations' ? 'actif' }}">Mes réservations</a>
+    </nav>
+
+    {% if onglet == 'crees' %}
+        {% if trajets|length > 0 %}
+            <div class="liste-trajets">
+                {% for trajet in trajets %}
+                    <article class="carte-trajet">
+                        <div>
+                            <div class="carte-trajet__route">
+                                {{ trajet.itineraire }}
+                                <span class="badge {{ trajet.statut.badge }}">{{ trajet.statut.libelle }}</span>
+                            </div>
+                            <div class="carte-trajet__meta">
+                                <span>📅 {{ trajet.date|date_fr }}</span>
+                                <span>🕑 {{ trajet.heure|date('H\\hi') }}</span>
+                                <span>💶 {{ trajet.prixParPlace|number_format(0, ',', ' ') }} € / place</span>
+                                <span>👥 {{ trajet.placesReservees }}/{{ trajet.nombrePlaces }} place{{ trajet.nombrePlaces > 1 ? 's' }} réservée{{ trajet.placesReservees > 1 ? 's' }}</span>
+                            </div>
+                        </div>
+                        <div class="carte-trajet__actions">
+                            <a href="{{ path('app_trajet_details', {id: trajet.id}) }}" class="btn btn--secondaire btn--petit">Voir</a>
+                            {% if trajet.statut.value == 'a_venir' and not trajet.estPasse %}
+                                <a href="{{ path('app_trajet_modifier', {id: trajet.id}) }}" class="btn btn--secondaire btn--petit">Modifier</a>
+                                <button type="button" class="btn btn--danger btn--petit"
+                                        onclick="document.getElementById('modal-trajet-{{ trajet.id }}').showModal()">
+                                    Annuler
+                                </button>
+
+                                <dialog id="modal-trajet-{{ trajet.id }}" class="modale">
+                                    <h2>Annuler ce trajet ?</h2>
+                                    <p>
+                                        Le trajet {{ trajet.itineraire }} du
+                                        {{ trajet.date|date_fr }} sera annulé
+                                        et toutes les réservations de vos passagers seront annulées.
+                                        Cette action est irréversible.
+                                    </p>
+                                    <div class="modale__actions">
+                                        <button type="button" class="btn btn--secondaire btn--petit"
+                                                onclick="this.closest('dialog').close()">
+                                            Conserver le trajet
+                                        </button>
+                                        <form method="post" action="{{ path('app_trajet_annuler', {id: trajet.id}) }}" data-turbo="false">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('annuler_trajet_' ~ trajet.id) }}">
+                                            <button type="submit" class="btn btn--danger btn--petit">Annuler le trajet</button>
+                                        </form>
+                                    </div>
+                                </dialog>
+                            {% endif %}
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="etat-vide">
+                <h2>Aucun trajet créé</h2>
+                <p>Vous n’avez pas encore proposé de trajet. Lancez-vous !</p>
+                <div class="etat-vide__actions">
+                    <a href="{{ path('app_trajet_creer') }}" class="btn btn--primaire">Créer un trajet</a>
+                </div>
+            </div>
+        {% endif %}
+    {% else %}
+        {% if reservations|length > 0 %}
+            <div class="liste-trajets">
+                {% for reservation in reservations %}
+                    <article class="carte-trajet">
+                        <div>
+                            <div class="carte-trajet__route">
+                                {{ reservation.trajet.itineraire }}
+                                <span class="badge {{ reservation.statut.badge }}">{{ reservation.statut.libelle }}</span>
+                            </div>
+                            <div class="carte-trajet__meta">
+                                <span>👤 {{ reservation.trajet.conducteur.nomCourt }}</span>
+                                <span>📅 {{ reservation.trajet.date|date_fr }} · {{ reservation.trajet.heure|date('H\\hi') }}</span>
+                                <span>👥 {{ reservation.nombrePlaces }} place{{ reservation.nombrePlaces > 1 ? 's' }}</span>
+                                <span>💶 {{ reservation.prixTotal|number_format(2, ',', ' ') }} €</span>
+                            </div>
+                        </div>
+                        <div class="carte-trajet__actions">
+                            <a href="{{ path('app_trajet_details', {id: reservation.trajet.id}) }}" class="btn btn--secondaire btn--petit">Voir les détails</a>
+                            {% if reservation.estAnnulable %}
+                                <button type="button" class="btn btn--danger btn--petit"
+                                        onclick="document.getElementById('modal-resa-{{ reservation.id }}').showModal()">
+                                    Annuler
+                                </button>
+
+                                <dialog id="modal-resa-{{ reservation.id }}" class="modale">
+                                    <h2>Annuler cette réservation ?</h2>
+                                    <p>
+                                        Votre réservation pour le trajet {{ reservation.trajet.itineraire }}
+                                        sera annulée et vos places seront libérées.
+                                    </p>
+                                    <div class="modale__actions">
+                                        <button type="button" class="btn btn--secondaire btn--petit"
+                                                onclick="this.closest('dialog').close()">
+                                            Conserver la réservation
+                                        </button>
+                                        <form method="post" action="{{ path('app_reservation_annuler', {id: reservation.id}) }}" data-turbo="false">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('annuler_reservation_' ~ reservation.id) }}">
+                                            <button type="submit" class="btn btn--danger btn--petit">Annuler la réservation</button>
+                                        </form>
+                                    </div>
+                                </dialog>
+                            {% endif %}
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="etat-vide">
+                <h2>Aucune réservation</h2>
+                <p>Vous n’avez pas encore réservé de trajet.</p>
+                <div class="etat-vide__actions">
+                    <a href="{{ path('app_trajet_rechercher') }}" class="btn btn--primaire">Rechercher un trajet</a>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}

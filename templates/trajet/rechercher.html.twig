@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rechercher un trajet{% endblock %}
+
+{% block corps %}
+    <h1>Rechercher un trajet</h1>
+
+    {{ form_start(form, {attr: {'data-turbo': 'false'}}) }}
+        <div class="form-recherche">
+            <div class="champ">
+                {{ form_label(form.villeDepart, 'Ville de départ', {
+                    label_attr: {class: 'form-label fw-semibold'}
+                }) }}
+                {{ form_widget(form.villeDepart, {
+                    attr: {class: 'form-control', placeholder: 'Rouen'}
+                }) }}
+                {{ form_errors(form.villeDepart) }}
+            </div>
+            <div class="champ">
+                {{ form_label(form.villeArrivee, 'Destination', {
+                    label_attr: {class: 'form-label fw-semibold'}
+                }) }}
+                {{ form_widget(form.villeArrivee, {
+                    attr: {class: 'form-control', placeholder: 'Paris'}
+                }) }}
+                {{ form_errors(form.villeArrivee) }}
+            </div>
+            <div class="champ">
+                {{ form_label(form.date, 'Date', {
+                    label_attr: {class: 'form-label fw-semibold'}
+                }) }}
+                {{ form_widget(form.date, {
+                    attr: {class: 'form-control'}
+                }) }}
+                {{ form_errors(form.date) }}
+            </div>
+            <div class="champ">
+                {{ form_label(form.heure, 'Heure', {
+                    label_attr: {class: 'form-label fw-semibold'}
+                }) }}
+                {{ form_widget(form.heure, {
+                    attr: {class: 'form-control'}
+                }) }}
+                {{ form_errors(form.heure) }}
+            </div>
+            <button type="submit" class="btn btn--primaire">Rechercher</button>
+        </div>
+
+        <div class="filtres">
+            <div class="filtres__chips">
+                <div class="champ">
+                    {{ form_label(form.prixMax, 'Prix maximum (€)', {
+                        label_attr: {class: 'form-label fw-semibold'}
+                    }) }}
+                    {{ form_widget(form.prixMax, {
+                        attr: {class: 'form-control', placeholder: '20'}
+                    }) }}
+                    {{ form_errors(form.prixMax) }}
+                </div>
+                <div class="champ">
+                    {{ form_label(form.nombrePlaces, 'Nombre de places', {
+                        label_attr: {class: 'form-label fw-semibold'}
+                    }) }}
+                    {{ form_widget(form.nombrePlaces, {
+                        attr: {class: 'form-control', placeholder: '1'}
+                    }) }}
+                    {{ form_errors(form.nombrePlaces) }}
+                </div>
+                <div class="champ">
+                    {{ form_label(form.distanceMax, 'Distance max (km)', {
+                        label_attr: {class: 'form-label fw-semibold'}
+                    }) }}
+                    {{ form_widget(form.distanceMax, {
+                        attr: {class: 'form-control', placeholder: '200'}
+                    }) }}
+                    {{ form_errors(form.distanceMax) }}
+                </div>
+            </div>
+            <div class="filtres__droite">
+                <a href="{{ path('app_trajet_rechercher') }}">Réinitialiser les filtres</a>
+                <div class="filtres__chips">
+                    <div class="champ">
+                        {{ form_label(form.tri, 'Trier par', {
+                            label_attr: {class: 'form-label fw-semibold'}
+                        }) }}
+                        {{ form_widget(form.tri, {
+                            attr: {class: 'form-select'}
+                        }) }}
+                        {{ form_errors(form.tri) }}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn--secondaire btn--petit">Appliquer</button>
+            </div>
+        </div>
+    {{ form_end(form) }}
+
+    {% if trajets|length > 0 %}
+        <p class="compteur-resultats">
+            {{ trajets|length }} trajet{{ trajets|length > 1 ? 's' }} disponible{{ trajets|length > 1 ? 's' }}
+        </p>
+        <div class="liste-trajets">
+            {% for trajet in trajets %}
+                {{ include('trajet/_carte.html.twig', {trajet: trajet}) }}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="etat-vide">
+            <svg width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
+                <circle cx="33" cy="33" r="20" stroke="#98A399" stroke-width="3"/>
+                <path d="m48 48 12 12" stroke="#98A399" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="27" cy="28" r="2" fill="#98A399"/>
+                <circle cx="39" cy="28" r="2" fill="#98A399"/>
+                <path d="M26 40c2-4 12-4 14 0" stroke="#98A399" stroke-width="2.4" stroke-linecap="round"/>
+            </svg>
+            <h2>Aucun trajet trouvé</h2>
+            <p>
+                Aucun trajet ne correspond à votre recherche. Essayez de modifier la date,
+                l’heure ou d’élargir vos filtres.
+            </p>
+            <div class="etat-vide__actions">
+                <a href="{{ path('app_trajet_rechercher') }}" class="btn btn--fantome">Réinitialiser les filtres</a>
+                <a href="{{ path('app_trajet_creer') }}" class="btn btn--primaire">Créer ce trajet</a>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

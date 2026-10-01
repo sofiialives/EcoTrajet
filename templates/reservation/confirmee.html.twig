@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservation confirmée{% endblock %}
+
+{% block corps %}
+    <div class="confirmation">
+        <div class="carte">
+            <div class="confirmation__icone">
+                <svg width="72" height="72" viewBox="0 0 72 72" fill="none" aria-hidden="true">
+                    <circle cx="36" cy="36" r="34" fill="#4ADE80" fill-opacity="0.12"/>
+                    <circle cx="36" cy="36" r="34" stroke="#4ADE80" stroke-width="2"/>
+                    <path d="m23 37 9 9 17-19" stroke="#4ADE80" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h1 style="font-size: 26px;">Réservation confirmée !</h1>
+            <p>
+                Votre réservation a bien été confirmée. Vous recevrez un e-mail de
+                confirmation avec tous les détails du trajet.
+            </p>
+
+            <div class="recap">
+                <dl>
+                    <div class="recap__ligne"><dt>Trajet</dt><dd>{{ reservation.trajet.itineraire }}</dd></div>
+                    <div class="recap__ligne"><dt>Conducteur</dt><dd>{{ reservation.trajet.conducteur.nomCourt }}</dd></div>
+                    <div class="recap__ligne"><dt>Date</dt><dd>{{ reservation.trajet.date|date_fr(true) }} · {{ reservation.trajet.heure|date('H\\hi') }}</dd></div>
+                    <div class="recap__ligne"><dt>Places</dt><dd>{{ reservation.nombrePlaces }}</dd></div>
+                    <div class="recap__ligne recap__total"><dt>Prix total</dt><dd>{{ reservation.prixTotal|number_format(2, ',', ' ') }} €</dd></div>
+                </dl>
+            </div>
+
+            <div class="confirmation__actions">
+                <a href="{{ path('app_mes_trajets', {onglet: 'reservations'}) }}" class="btn btn--primaire">Voir mes réservations</a>
+                <a href="{{ path('app_accueil') }}" class="btn btn--fantome">Retour à l’accueil</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

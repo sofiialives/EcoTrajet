@@ -1,0 +1,45 @@
+{# Thème de formulaire Eco Trajet — basé sur Bootstrap 5, avec icône « œil ». #}
+{% use 'bootstrap_5_layout.html.twig' %}
+
+{% block form_row %}
+    {% set avec_oeil = attr['data-oeil'] is defined %}
+    <div class="champ{% if not form.vars.valid %} champ--erreur{% endif %}">
+        {{ form_label(form) }}
+        {% if avec_oeil %}
+            <div class="champ-mdp">
+                {{ form_widget(form) }}
+                <button type="button" class="oeil" data-bascule-mdp aria-label="Afficher le mot de passe">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" stroke="currentColor" stroke-width="1.8"/>
+                        <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/>
+                    </svg>
+                </button>
+            </div>
+        {% else %}
+            {{ form_widget(form) }}
+        {% endif %}
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}
+
+{% block checkbox_row %}
+    <div class="champ{% if not form.vars.valid %} champ--erreur{% endif %}">
+        <label style="display:inline-flex;align-items:center;gap:10px;color:var(--texte-2);font-size:13px;">
+            {{ form_widget(form) }}
+            <span>{{ form.vars.label }}</span>
+        </label>
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}
+
+{% block form_errors %}
+    {% if errors|length > 0 %}
+        <div class="erreurs-champ">
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error.message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+{% endblock %}

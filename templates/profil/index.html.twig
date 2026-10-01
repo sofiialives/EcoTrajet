@@ -1,0 +1,145 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon profil{% endblock %}
+
+{% block corps %}
+    <div class="page-profil">
+        <h1>Mon profil</h1>
+
+        <div class="carte">
+            {{ form_start(form_profil, {attr: {'data-turbo': 'false'}}) }}
+                <div class="ligne-photo">
+                    <span class="avatar avatar--56">
+                        {% if app.user.photo %}
+                            <img src="{{ asset('uploads/avatars/' ~ app.user.photo) }}" alt="Photo de profil">
+                        {% else %}
+                            {{ app.user.initiales }}
+                        {% endif %}
+                    </span>
+                    <div style="flex: 1;">
+                        <strong>Photo de profil</strong>
+                        <small>JPG, PNG ou WebP · 2 Mo max.</small>
+                    </div>
+                </div>
+                <div class="champ">
+                    {{ form_label(form_profil.photoFichier, 'Photo de profil', {
+                        label_attr: {class: 'form-label fw-semibold'}
+                    }) }}
+                    {{ form_widget(form_profil.photoFichier, {
+                        attr: {class: 'form-control'}
+                    }) }}
+                    {{ form_errors(form_profil.photoFichier) }}
+                </div>
+
+                <div class="grille-2">
+                    <div class="champ">
+                        {{ form_label(form_profil.prenom, 'Prénom', {
+                            label_attr: {class: 'form-label fw-semibold'}
+                        }) }}
+                        {{ form_widget(form_profil.prenom, {
+                            attr: {class: 'form-control'}
+                        }) }}
+                        {{ form_errors(form_profil.prenom) }}
+                    </div>
+                    <div class="champ">
+                        {{ form_label(form_profil.nom, 'Nom', {
+                            label_attr: {class: 'form-label fw-semibold'}
+                        }) }}
+                        {{ form_widget(form_profil.nom, {
+                            attr: {class: 'form-control'}
+                        }) }}
+                        {{ form_errors(form_profil.nom) }}
+                    </div>
+                </div>
+
+                <div class="champ">
+                    {{ form_label(form_profil.nomUtilisateur, 'Nom d’utilisateur', {
+                        label_attr: {class: 'form-label fw-semibold'}
+                    }) }}
+                    {{ form_widget(form_profil.nomUtilisateur, {
+                        attr: {class: 'form-control'}
+                    }) }}
+                    {{ form_errors(form_profil.nomUtilisateur) }}
+                </div>
+
+                <div class="champ">
+                    {{ form_label(form_profil.email, 'Adresse e-mail', {
+                        label_attr: {class: 'form-label fw-semibold'}
+                    }) }}
+                    {{ form_widget(form_profil.email, {
+                        attr: {class: 'form-control'}
+                    }) }}
+                    {{ form_errors(form_profil.email) }}
+                </div>
+
+                <button type="submit" class="btn btn--primaire">Enregistrer les modifications</button>
+            {{ form_end(form_profil) }}
+        </div>
+
+        <div class="carte">
+            <h2 style="font-size: 20px;">Modifier le mot de passe</h2>
+            {{ form_start(form_mot_de_passe, {attr: {'data-turbo': 'false'}}) }}
+                <div class="champ">
+                    {{ form_label(form_mot_de_passe.ancienMotDePasse, 'Ancien mot de passe', {
+                        label_attr: {class: 'form-label fw-semibold'}
+                    }) }}
+                    <div class="champ-mdp">
+                        {{ form_widget(form_mot_de_passe.ancienMotDePasse, {
+                            attr: {class: 'form-control'}
+                        }) }}
+                        <button type="button" class="oeil" data-bascule-mdp aria-label="Afficher le mot de passe">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" stroke="currentColor" stroke-width="1.8"/>
+                                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/>
+                            </svg>
+                        </button>
+                    </div>
+                    {{ form_errors(form_mot_de_passe.ancienMotDePasse) }}
+                </div>
+
+                <div class="champ">
+                    {{ form_label(form_mot_de_passe.nouveauMotDePasse.first, 'Nouveau mot de passe', {
+                        label_attr: {class: 'form-label fw-semibold'}
+                    }) }}
+                    <div class="champ-mdp">
+                        {{ form_widget(form_mot_de_passe.nouveauMotDePasse.first, {
+                            attr: {class: 'form-control'}
+                        }) }}
+                        <button type="button" class="oeil" data-bascule-mdp aria-label="Afficher le mot de passe">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" stroke="currentColor" stroke-width="1.8"/>
+                                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/>
+                            </svg>
+                        </button>
+                    </div>
+                    {{ form_errors(form_mot_de_passe.nouveauMotDePasse.first) }}
+                </div>
+
+                <div class="champ">
+                    {{ form_label(form_mot_de_passe.nouveauMotDePasse.second, 'Confirmer le nouveau mot de passe', {
+                        label_attr: {class: 'form-label fw-semibold'}
+                    }) }}
+                    <div class="champ-mdp">
+                        {{ form_widget(form_mot_de_passe.nouveauMotDePasse.second, {
+                            attr: {class: 'form-control'}
+                        }) }}
+                        <button type="button" class="oeil" data-bascule-mdp aria-label="Afficher le mot de passe">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" stroke="currentColor" stroke-width="1.8"/>
+                                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/>
+                            </svg>
+                        </button>
+                    </div>
+                    {{ form_errors(form_mot_de_passe.nouveauMotDePasse.second) }}
+                    {{ form_errors(form_mot_de_passe.nouveauMotDePasse) }}
+                </div>
+
+                <button type="submit" class="btn btn--secondaire">Modifier le mot de passe</button>
+            {{ form_end(form_mot_de_passe) }}
+        </div>
+
+        <div>
+            <a href="{{ path('app_deconnexion') }}" class="btn btn--danger">Se déconnecter</a>
+        </div>
+    </div>
+{% endblock %}

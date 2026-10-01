@@ -1,0 +1,21 @@
+<div style="font-family: Arial, sans-serif; max-width: 520px; margin: 0 auto; padding: 24px; background: #0A0C0B; color: #F2F5F1; border-radius: 16px;">
+    <h1 style="font-size: 22px; margin: 0 0 16px;">
+        <span style="color: #F2F5F1;">Eco</span><span style="color: #A3E635;">Trajet</span>
+    </h1>
+    <p>Bonjour {{ utilisateur.prenom }},</p>
+    <p>
+        Vous avez demandé la réinitialisation de votre mot de passe.
+        Cliquez sur le bouton ci-dessous pour en choisir un nouveau :
+    </p>
+    <p style="text-align: center; margin: 28px 0;">
+        <a href="{{ lien }}"
+           style="display: inline-block; background: #A3E635; color: #0A0C0B; font-weight: bold; padding: 14px 28px; border-radius: 999px; text-decoration: none;">
+            Réinitialiser mon mot de passe
+        </a>
+    </p>
+    <p style="color: #98A399; font-size: 13px;">
+        Ce lien est valable pendant 1 heure. Si vous n’êtes pas à l’origine de cette demande,
+        vous pouvez ignorer cet e-mail.
+    </p>
+    <p style="color: #98A399; font-size: 13px;">« Partagez la route, allégez la planète. »</p>
+</div>

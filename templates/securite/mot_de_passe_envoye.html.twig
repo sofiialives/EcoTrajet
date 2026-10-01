@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}E-mail envoyé{% endblock %}
+
+{% block corps_conteneur %}
+    <main class="page-auth">
+        <div class="carte confirmation">
+            <div class="confirmation__icone">
+                <svg width="56" height="56" viewBox="0 0 56 56" fill="none" aria-hidden="true">
+                    <circle cx="28" cy="28" r="27" stroke="#4ADE80" stroke-width="2"/>
+                    <path d="m18 29 7 7 13-15" stroke="#4ADE80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h1>E-mail envoyé !</h1>
+            <p>
+                Un lien de réinitialisation a été envoyé à votre adresse e-mail.
+                Pensez à vérifier vos courriers indésirables.
+            </p>
+            <div class="confirmation__actions">
+                <a href="{{ path('app_connexion') }}" class="btn btn--fantome">Retour à la connexion</a>
+            </div>
+        </div>
+    </main>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ trajet.itineraire }}{% endblock %}
+
+{% block corps %}
+    <p><a href="{{ path('app_trajet_rechercher') }}">← Retour aux résultats</a></p>
+
+    <div class="colonnes-details">
+        <div>
+            <div class="carte">
+                <div class="carte-trajet__route" style="font-size: 30px; font-weight: 700;">
+                    {{ trajet.itineraire }}
+                    <span class="badge {{ trajet.statut.badge }}">{{ trajet.statut.libelle }}</span>
+                    {% if trajet.estComplet and trajet.statut.value == 'a_venir' %}
+                        <span class="badge badge--complet">Complet</span>
+                    {% endif %}
+                </div>
+                <div class="carte-trajet__meta">
+                    <span>📅 {{ trajet.date|date_fr_longue }}</span>
+                    <span>🕑 Départ à {{ trajet.heure|date('H\\hi') }}</span>
+                    <span>📍 {{ trajet.distanceKm }} km</span>
+                </div>
+
+                <hr class="separateur">
+
+                <div class="itineraire-etapes">
+                    <div class="etape">
+                        <span class="etape__point">●</span>
+                        <div>
+                            <strong>Départ — {{ trajet.villeDepart }}</strong>
+                            <small>{{ trajet.pointRendezVous }}, {{ trajet.heure|date('H\\hi') }}</small>
+                        </div>
+                    </div>
+                    <div class="etape">
+                        <span class="etape__point">○</span>
+                        <div>
+                            <strong>Point de rendez-vous</strong>
+                            <small>{{ trajet.pointRendezVous }}</small>
+                        </div>
+                    </div>
+                    <div class="etape">
+                        <span class="etape__point">◆</span>
+                        <div>
+                            <strong>Arrivée — {{ trajet.villeArrivee }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carte" style="margin-top: 20px;">
+                <h3>Description</h3>
+                <p style="color: var(--texte-2); line-height: 1.6;">
+                    {{ trajet.description ?: 'Aucune description fournie par le conducteur.' }}
+                </p>
+                {% if trajet.vehicule %}
+                    <p>🚗 <strong>{{ trajet.vehicule }}</strong></p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div>
+            <div class="carte carte--accent">
+                <div class="prix prix--grand">{{ trajet.prixParPlace|number_format(0, ',', ' ') }} € <small>/ place</small></div>
+                {% if trajet.estComplet %}
+                    <p class="places-dispo places-dispo--complet">Il n’y a plus de places disponibles pour ce trajet.</p>
+                    <button class="btn btn--secondaire btn--large" disabled>Trajet complet</button>
+                {% elseif trajet.statut.value != 'a_venir' or trajet.estPasse %}
+                    <p class="places-dispo">Ce trajet n’est plus disponible à la réservation.</p>
+                {% elseif app.user and app.user == trajet.conducteur %}
+                    <p class="places-dispo">{{ trajet.placesRestantes }} place{{ trajet.placesRestantes > 1 ? 's' }} disponible{{ trajet.placesRestantes > 1 ? 's' }}</p>
+                    <p class="note-petite">C’est votre trajet — gérez-le depuis « Mes trajets ».</p>
+                    <a href="{{ path('app_mes_trajets') }}" class="btn btn--secondaire btn--large">Gérer mon trajet</a>
+                {% else %}
+                    <p class="places-dispo">{{ trajet.placesRestantes }} place{{ trajet.placesRestantes > 1 ? 's' }} disponible{{ trajet.placesRestantes > 1 ? 's' }}</p>
+                    <a href="{{ path('app_reservation_reserver', {id: trajet.id}) }}" class="btn btn--primaire btn--large">
+                        Réserver une place
+                    </a>
+                    <p class="note-petite">Sans frais · annulation gratuite jusqu’à 24 h avant</p>
+                {% endif %}
+            </div>
+
+            <div class="carte" style="margin-top: 20px;">
+                <label>Conducteur</label>
+                <div class="carte-trajet__conducteur">
+                    <span class="avatar avatar--56">
+                        {% if trajet.conducteur.photo %}
+                            <img src="{{ asset('uploads/avatars/' ~ trajet.conducteur.photo) }}" alt="">
+                        {% else %}
+                            {{ trajet.conducteur.initiales }}
+                        {% endif %}
+                    </span>
+                    <div>
+                        <strong>{{ trajet.conducteur.nomCourt }}</strong>
+                        <small>@{{ trajet.conducteur.nomUtilisateur }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

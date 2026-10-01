@@ -1,0 +1,41 @@
+{# Carte de résultat de recherche (cf. maquette : Rouen → Paris, 15 €/place…) #}
+<article class="carte-trajet">
+    <div>
+        <div class="carte-trajet__route">
+            {{ trajet.itineraire }}
+            {% if trajet.estComplet %}
+                <span class="badge badge--complet">Complet</span>
+            {% endif %}
+        </div>
+        <div class="carte-trajet__meta">
+            <span>📅 {{ trajet.date|date_fr }}</span>
+            <span>🕑 {{ trajet.heure|date('H\\hi') }}</span>
+            <span>📍 {{ trajet.distanceKm }} km</span>
+        </div>
+        <div class="carte-trajet__conducteur">
+            <span class="avatar">
+                {% if trajet.conducteur.photo %}
+                    <img src="{{ asset('uploads/avatars/' ~ trajet.conducteur.photo) }}" alt="">
+                {% else %}
+                    {{ trajet.conducteur.initiales }}
+                {% endif %}
+            </span>
+            <div>
+                <strong>{{ trajet.conducteur.nomCourt }}</strong>
+                <small>@{{ trajet.conducteur.nomUtilisateur }}</small>
+            </div>
+        </div>
+    </div>
+    <div class="carte-trajet__droite">
+        <div class="prix">{{ trajet.prixParPlace|number_format(0, ',', ' ') }} € <small>/ place</small></div>
+        {% if trajet.estComplet %}
+            <span class="places-dispo places-dispo--complet">0 place disponible</span>
+        {% else %}
+            <span class="places-dispo">{{ trajet.placesRestantes }} place{{ trajet.placesRestantes > 1 ? 's' }} disponible{{ trajet.placesRestantes > 1 ? 's' }}</span>
+        {% endif %}
+        <a href="{{ path('app_trajet_details', {id: trajet.id}) }}"
+           class="btn {{ trajet.estComplet ? 'btn--secondaire' : 'btn--fantome' }} btn--petit">
+            Voir le trajet
+        </a>
+    </div>
+</article>

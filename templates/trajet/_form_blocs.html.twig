@@ -1,0 +1,122 @@
+{# Formulaire de trajet en 4 blocs (Créer / Modifier). #}
+{{ form_start(form, {attr: {'data-turbo': 'false'}}) }}
+    <div class="form-blocs">
+        <div class="carte bloc-form">
+            <h3>Itinéraire</h3>
+            <p class="bloc-form__sous-titre">D’où partez-vous et où allez-vous ?</p>
+            <div class="grille-2">
+                <div class="champ">
+                    {{ form_label(form.villeDepart, 'Ville de départ', {
+                        label_attr: {class: 'form-label fw-semibold'}
+                    }) }}
+                    {{ form_widget(form.villeDepart, {
+                        attr: {class: 'form-control', placeholder: 'Rouen'}
+                    }) }}
+                    {{ form_errors(form.villeDepart) }}
+                </div>
+                <div class="champ">
+                    {{ form_label(form.villeArrivee, 'Ville d’arrivée', {
+                        label_attr: {class: 'form-label fw-semibold'}
+                    }) }}
+                    {{ form_widget(form.villeArrivee, {
+                        attr: {class: 'form-control', placeholder: 'Paris'}
+                    }) }}
+                    {{ form_errors(form.villeArrivee) }}
+                </div>
+            </div>
+            <div class="champ">
+                {{ form_label(form.distanceKm, 'Distance (km)', {
+                    label_attr: {class: 'form-label fw-semibold'}
+                }) }}
+                {{ form_widget(form.distanceKm, {
+                    attr: {class: 'form-control', placeholder: '120'}
+                }) }}
+                {{ form_errors(form.distanceKm) }}
+            </div>
+        </div>
+
+        <div class="carte bloc-form">
+            <h3>Date et horaires</h3>
+            <p class="bloc-form__sous-titre">Quand partez-vous ?</p>
+            <div class="grille-2">
+                <div class="champ">
+                    {{ form_label(form.date, 'Date', {
+                        label_attr: {class: 'form-label fw-semibold'}
+                    }) }}
+                    {{ form_widget(form.date, {
+                        attr: {class: 'form-control'}
+                    }) }}
+                    {{ form_errors(form.date) }}
+                </div>
+                <div class="champ">
+                    {{ form_label(form.heure, 'Heure de départ', {
+                        label_attr: {class: 'form-label fw-semibold'}
+                    }) }}
+                    {{ form_widget(form.heure, {
+                        attr: {class: 'form-control'}
+                    }) }}
+                    {{ form_errors(form.heure) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="carte bloc-form">
+            <h3>Places et tarif</h3>
+            <p class="bloc-form__sous-titre">Combien de passagers, à quel prix ?</p>
+            <div class="grille-2">
+                <div class="champ">
+                    {{ form_label(form.nombrePlaces, 'Nombre de places', {
+                        label_attr: {class: 'form-label fw-semibold'}
+                    }) }}
+                    {{ form_widget(form.nombrePlaces, {
+                        attr: {class: 'form-control', placeholder: '3'}
+                    }) }}
+                    {{ form_errors(form.nombrePlaces) }}
+                </div>
+                <div class="champ">
+                    {{ form_label(form.prixParPlace, 'Prix par place (€)', {
+                        label_attr: {class: 'form-label fw-semibold'}
+                    }) }}
+                    {{ form_widget(form.prixParPlace, {
+                        attr: {class: 'form-control', placeholder: '15'}
+                    }) }}
+                    {{ form_errors(form.prixParPlace) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="carte bloc-form">
+            <h3>Informations complémentaires</h3>
+            <p class="bloc-form__sous-titre">Aidez vos passagers à vous trouver.</p>
+            <div class="champ">
+                {{ form_label(form.vehicule, 'Véhicule', {
+                    label_attr: {class: 'form-label fw-semibold'}
+                }) }}
+                {{ form_widget(form.vehicule, {
+                    attr: {class: 'form-control', placeholder: 'Renault Clio V · grise'}
+                }) }}
+                {{ form_errors(form.vehicule) }}
+            </div>
+            <div class="champ">
+                {{ form_label(form.pointRendezVous, 'Point de rendez-vous', {
+                    label_attr: {class: 'form-label fw-semibold'}
+                }) }}
+                {{ form_widget(form.pointRendezVous, {
+                    attr: {class: 'form-control', placeholder: 'Parking du Zénith, entrée B'}
+                }) }}
+                {{ form_errors(form.pointRendezVous) }}
+            </div>
+            <div class="champ">
+                {{ form_label(form.description, 'Description', {
+                    label_attr: {class: 'form-label fw-semibold'}
+                }) }}
+                {{ form_widget(form.description, {
+                    attr: {class: 'form-control', placeholder: 'Départ ponctuel, musique tranquille, pause possible à mi-chemin…'}
+                }) }}
+                {{ form_errors(form.description) }}
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn--primaire btn--large">{{ libelle_bouton }}</button>
+    </div>
+{{ form_end(form) }}

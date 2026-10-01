@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block corps_conteneur %}
+    <main class="page-auth">
+        <div class="carte">
+            <h1>Inscription</h1>
+            <p class="sous-titre">Rejoignez la communauté étudiante Eco Trajet.</p>
+
+            {{ form_start(form, {attr: {'data-turbo': 'false'}}) }}
+                <div class="grille-2">
+                    <div class="champ">
+                        {{ form_label(form.prenom, 'Prénom', {
+                            label_attr: {class: 'form-label fw-semibold'}
+                        }) }}
+                        {{ form_widget(form.prenom, {
+                            attr: {class: 'form-control', placeholder: 'Léa'}
+                        }) }}
+                        {{ form_errors(form.prenom) }}
+                    </div>
+
+                    <div class="champ">
+                        {{ form_label(form.nom, 'Nom', {
+                            label_attr: {class: 'form-label fw-semibold'}
+                        }) }}
+                        {{ form_widget(form.nom, {
+                            attr: {class: 'form-control', placeholder: 'Martin'}
+                        }) }}
+                        {{ form_errors(form.nom) }}
+                    </div>
+                </div>
+
+                <div class="champ">
+                    {{ form_label(form.nomUtilisateur, 'Nom d’utilisateur', {
+                        label_attr: {class: 'form-label fw-semibold'}
+                    }) }}
+                    {{ form_widget(form.nomUtilisateur, {
+                        attr: {class: 'form-control', placeholder: 'lea.martin'}
+                    }) }}
+                    {{ form_errors(form.nomUtilisateur) }}
+                </div>
+
+                <div class="champ">
+                    {{ form_label(form.email, 'Adresse e-mail', {
+                        label_attr: {class: 'form-label fw-semibold'}
+                    }) }}
+                    {{ form_widget(form.email, {
+                        attr: {class: 'form-control', placeholder: 'prenom.nom@univ.fr'}
+                    }) }}
+                    {{ form_errors(form.email) }}
+                </div>
+
+                <div class="champ">
+                    {{ form_label(form.motDePasse.first, 'Mot de passe', {
+                        label_attr: {class: 'form-label fw-semibold'}
+                    }) }}
+                    <div class="champ-mdp">
+                        {{ form_widget(form.motDePasse.first, {
+                            attr: {class: 'form-control', placeholder: '••••••••••'}
+                        }) }}
+                        <button type="button" class="oeil" data-bascule-mdp aria-label="Afficher le mot de passe">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" stroke="currentColor" stroke-width="1.8"/>
+                                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/>
+                            </svg>
+                        </button>
+                    </div>
+                    {{ form_errors(form.motDePasse.first) }}
+                </div>
+
+                <div class="champ">
+                    {{ form_label(form.motDePasse.second, 'Confirmer le mot de passe', {
+                        label_attr: {class: 'form-label fw-semibold'}
+                    }) }}
+                    <div class="champ-mdp">
+                        {{ form_widget(form.motDePasse.second, {
+                            attr: {class: 'form-control', placeholder: '••••••••••'}
+                        }) }}
+                        <button type="button" class="oeil" data-bascule-mdp aria-label="Afficher le mot de passe">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" stroke="currentColor" stroke-width="1.8"/>
+                                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/>
+                            </svg>
+                        </button>
+                    </div>
+                    {{ form_errors(form.motDePasse.second) }}
+                    {# Erreur « les deux mots de passe ne correspondent pas » : portée par le champ parent #}
+                    {{ form_errors(form.motDePasse) }}
+                </div>
+
+                <div class="form-check champ">
+                    {{ form_widget(form.conditions, {
+                        attr: {class: 'form-check-input'}
+                    }) }}
+                    {{ form_label(form.conditions, 'J’accepte les conditions d’utilisation', {
+                        label_attr: {class: 'form-check-label'}
+                    }) }}
+                    {{ form_errors(form.conditions) }}
+                </div>
+
+                <button type="submit" class="btn btn--primaire btn--large">S’inscrire</button>
+            {{ form_end(form) }}
+
+            <p class="lien-pied">
+                Déjà un compte ? <a href="{{ path('app_connexion') }}">Se connecter</a>
+            </p>
+        </div>
+    </main>
+{% endblock %}

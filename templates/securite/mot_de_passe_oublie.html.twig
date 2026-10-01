@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mot de passe oublié{% endblock %}
+
+{% block corps_conteneur %}
+    <main class="page-auth">
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alerte alerte--{{ type == 'erreur' ? 'erreur' : 'succes' }}" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endfor %}
+
+        <div class="carte">
+            <h1>Mot de passe oublié ?</h1>
+            <p class="sous-titre">
+                Saisissez votre adresse e-mail et nous vous enverrons un lien de réinitialisation.
+            </p>
+
+            {{ form_start(form, {attr: {'data-turbo': 'false'}}) }}
+                <div class="champ">
+                    {{ form_label(form.email, 'Adresse e-mail', {
+                        label_attr: {class: 'form-label fw-semibold'}
+                    }) }}
+                    {{ form_widget(form.email, {
+                        attr: {class: 'form-control', placeholder: 'prenom.nom@univ.fr'}
+                    }) }}
+                    {{ form_errors(form.email) }}
+                </div>
+
+                <button type="submit" class="btn btn--primaire btn--large">Envoyer le lien</button>
+            {{ form_end(form) }}
+
+            <p class="lien-pied">
+                ← Retour à la <a href="{{ path('app_connexion') }}">connexion</a>
+            </p>
+        </div>
+    </main>
+{% endblock %}
